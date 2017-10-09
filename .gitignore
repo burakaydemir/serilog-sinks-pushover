@@ -289,3 +289,4 @@ __pycache__/
 /test/Serilog.Sinks.Pushover.Tests/test_account.txt
 /src/Serilog.Sinks.Pushover/Serilog.Sinks.Pushover.nuspec
 /src/Serilog.Sinks.Pushover/nuget.exe
+/src/Serilog.Sinks.Pushover/nugetpublish.txt
