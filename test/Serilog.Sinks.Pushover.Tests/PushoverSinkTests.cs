@@ -62,5 +62,17 @@ namespace Serilog.Sinks.Pushover.Tests
 
             Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
         }
+
+        [TestMethod]
+        public void Can_Send_When_Minimum_Level_Same_as_LogEventLevel()
+        {
+            using (var pushoverLoger = new LoggerConfiguration()
+                .WriteTo.PushoverSink(LogEventLevel.Error, token: token, userOrGroupKey: userOrGroupKey).CreateLogger())
+            {
+                pushoverLoger.Error("This message must be reach");
+            }
+
+            Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
+        }
     }
 }
