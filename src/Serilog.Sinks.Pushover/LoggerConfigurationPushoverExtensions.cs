@@ -15,7 +15,7 @@ namespace Serilog.Sinks.Pushover
 
         public static LoggerConfiguration PushoverSink(
             this LoggerSinkConfiguration loggerSinkConfiguration,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Warning,
             string outputTitleTemplate = DefaultPushoverTitleTemplate,
             string outputMessageTemplate = DefaultPushoverMessageTemplate,
             string apiUri = DefaultPushoverUri,

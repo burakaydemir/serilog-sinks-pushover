@@ -38,7 +38,8 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
-
+            if (logEvent.Level < _logEventLevel)
+                return;
 
             using (var titleBuffer = new StringWriter())
             using (var messageBuffer = new StringWriter())
@@ -46,26 +47,19 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
                 _titleFormatter.Format(logEvent, titleBuffer);
                 _messageFormatter.Format(logEvent, messageBuffer);
 
-                try
-                {
-                    var parameters = new NameValueCollection {
-                        { "token", _token },
-                        { "user", _userOrGroupKey },
-                        { "title", titleBuffer.ToString() },
-                        { "message", messageBuffer.ToString() },
-                        { "device", string.Join(",", _devices ?? new string[]{""}) },
-                        { "priority", "1" }
-                    };
+                var parameters = new NameValueCollection {
+                    { "token", _token },
+                    { "user", _userOrGroupKey },
+                    { "title", titleBuffer.ToString() },
+                    { "message", messageBuffer.ToString() },
+                    { "device", string.Join(",", _devices ?? new string[]{""}) },
+                    { "priority", "1" }
+                };
 
-                    using (var client = new WebClient())
-                    {
-                        byte[] response = client.UploadValues(_apiUri, parameters);
-                        var result = Encoding.ASCII.GetString(response);
-                    }
-                }
-                catch (Exception ex)
+                using (var client = new WebClient())
                 {
-                    throw;
+                    byte[] response = client.UploadValues(_apiUri, parameters);
+                    var result = Encoding.ASCII.GetString(response);
                 }
             }
         }
