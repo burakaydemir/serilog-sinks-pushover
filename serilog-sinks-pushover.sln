@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.Pushover", "src\Serilog.Sinks.Pushover\Serilog.Sinks.Pushover.csproj", "{27115430-A941-4F30-8F8E-FCC582258BEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.Pushover.Tests", "test\Serilog.Sinks.Pushover.Tests\Serilog.Sinks.Pushover.Tests.csproj", "{36FF319D-F650-465C-BAB9-08774929D0E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{27115430-A941-4F30-8F8E-FCC582258BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27115430-A941-4F30-8F8E-FCC582258BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27115430-A941-4F30-8F8E-FCC582258BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36FF319D-F650-465C-BAB9-08774929D0E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36FF319D-F650-465C-BAB9-08774929D0E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36FF319D-F650-465C-BAB9-08774929D0E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36FF319D-F650-465C-BAB9-08774929D0E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

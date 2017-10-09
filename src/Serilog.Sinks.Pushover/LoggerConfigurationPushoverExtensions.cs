@@ -28,6 +28,7 @@ namespace Serilog.Sinks.Pushover
             if (loggerSinkConfiguration == null) throw new ArgumentNullException(nameof(loggerSinkConfiguration));
             if (token == null) throw new ArgumentNullException(nameof(token));
             if (userOrGroupKey == null) throw new ArgumentNullException(nameof(userOrGroupKey));
+            if (outputTitleTemplate == null) throw new ArgumentNullException(nameof(outputTitleTemplate));
             if (outputMessageTemplate == null) throw new ArgumentNullException(nameof(outputMessageTemplate));
 
             var titleFormatter = new MessageTemplateTextFormatter(outputTitleTemplate, formatProvider);
