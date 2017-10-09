@@ -15,26 +15,27 @@ namespace Serilog.Sinks.Pushover
 
         public static LoggerConfiguration PushoverSink(
             this LoggerSinkConfiguration loggerSinkConfiguration,
+            string token,
+            string userOrGroupKey,
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Warning,
             string outputTitleTemplate = DefaultPushoverTitleTemplate,
             string outputMessageTemplate = DefaultPushoverMessageTemplate,
             string apiUri = DefaultPushoverUri,
-            string token = null,
-            string userOrGroupKey = null,
             string[] devices = null,
+            PushoverMessagePriority pushoverMessagePriority = PushoverMessagePriority.HighPriority,
             IFormatProvider formatProvider = null,
             LoggingLevelSwitch levelSwitch = null)
         {
             if (loggerSinkConfiguration == null) throw new ArgumentNullException(nameof(loggerSinkConfiguration));
-            if (token == null) throw new ArgumentNullException(nameof(token));
-            if (userOrGroupKey == null) throw new ArgumentNullException(nameof(userOrGroupKey));
+            if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException(nameof(token));
+            if (string.IsNullOrWhiteSpace(userOrGroupKey)) throw new ArgumentNullException(nameof(userOrGroupKey));
             if (outputTitleTemplate == null) throw new ArgumentNullException(nameof(outputTitleTemplate));
             if (outputMessageTemplate == null) throw new ArgumentNullException(nameof(outputMessageTemplate));
 
             var titleFormatter = new MessageTemplateTextFormatter(outputTitleTemplate, formatProvider);
             var messageFormatter = new MessageTemplateTextFormatter(outputMessageTemplate, formatProvider);
 
-            return loggerSinkConfiguration.Sink(new PushoverSink(titleFormatter, messageFormatter, apiUri, token, userOrGroupKey, devices, restrictedToMinimumLevel, levelSwitch));
+            return loggerSinkConfiguration.Sink(new Sinks.Pushover.Pushover(titleFormatter, messageFormatter, apiUri, token, userOrGroupKey, devices, pushoverMessagePriority, restrictedToMinimumLevel));
         }
     }
 }

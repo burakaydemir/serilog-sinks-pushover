@@ -24,7 +24,7 @@ namespace Serilog.Sinks.Pushover.Tests
         public void Can_Send_PushMessage()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(LogEventLevel.Information, token: token, userOrGroupKey: userOrGroupKey).CreateLogger())
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Information).CreateLogger())
             {
                 pushoverLoger.Information("test {notification}", "notification");
             }
@@ -36,7 +36,7 @@ namespace Serilog.Sinks.Pushover.Tests
         public void Can_Send_PushMessage_With_Exception()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(LogEventLevel.Information, token: token, userOrGroupKey: userOrGroupKey).CreateLogger())
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Information).CreateLogger())
             {
                 try
                 {
@@ -55,7 +55,7 @@ namespace Serilog.Sinks.Pushover.Tests
         public void When_Minimum_Level_Is_Exception_Then_Dont_Send_Infromation()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(LogEventLevel.Error, token: token, userOrGroupKey: userOrGroupKey).CreateLogger())
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error).CreateLogger())
             {
                 pushoverLoger.Information("The information message that never reach");
             }
@@ -67,7 +67,7 @@ namespace Serilog.Sinks.Pushover.Tests
         public void Can_Send_When_Minimum_Level_Same_as_LogEventLevel()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(LogEventLevel.Error, token: token, userOrGroupKey: userOrGroupKey).CreateLogger())
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error).CreateLogger())
             {
                 pushoverLoger.Error("This message must be reach");
             }
@@ -79,7 +79,9 @@ namespace Serilog.Sinks.Pushover.Tests
         public void Should_push_message_text_changable()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(LogEventLevel.Error, token: token, userOrGroupKey: userOrGroupKey, outputTitleTemplate: "|{Level}| {Message}", outputMessageTemplate: "Below error throwed! {Exception}").CreateLogger())
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error, 
+                            outputTitleTemplate: "|{Level}| {Message}", 
+                            outputMessageTemplate: "Below error throwed! {Exception}").CreateLogger())
             {
                 try
                 {

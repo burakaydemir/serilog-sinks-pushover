@@ -2,14 +2,13 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
-using System.Text;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
 
 namespace Serilog.Sinks.Pushover.Sinks.Pushover
 {
-    public class PushoverSink : ILogEventSink
+    public class Pushover : ILogEventSink
     {
         private readonly ITextFormatter _messageFormatter;
         private readonly ITextFormatter _titleFormatter;
@@ -17,10 +16,17 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         private readonly string _token;
         private readonly string _userOrGroupKey;
         private readonly string[] _devices;
+        private readonly PushoverMessagePriority _pushoverMessagePriority;
         private readonly LogEventLevel _logEventLevel;
-        private readonly LoggingLevelSwitch _loggingLevelSwitch;
 
-        public PushoverSink(ITextFormatter titleFormatter, ITextFormatter messageFormatter, string apiUri, string token, string userOrGroupKey, string[] devices, LogEventLevel logEventLevel, LoggingLevelSwitch loggingLevelSwitch)
+        public Pushover(ITextFormatter titleFormatter,
+            ITextFormatter messageFormatter,
+            string apiUri,
+            string token,
+            string userOrGroupKey,
+            string[] devices,
+            PushoverMessagePriority pushoverMessagePriority,
+            LogEventLevel logEventLevel)
         {
             _titleFormatter = titleFormatter;
             _messageFormatter = messageFormatter;
@@ -29,7 +35,7 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
             _userOrGroupKey = userOrGroupKey;
             _devices = devices;
             _logEventLevel = logEventLevel;
-            _loggingLevelSwitch = loggingLevelSwitch;
+            _pushoverMessagePriority = pushoverMessagePriority;
         }
 
         /// <summary>
@@ -52,14 +58,13 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
                     { "user", _userOrGroupKey },
                     { "title", titleBuffer.ToString() },
                     { "message", messageBuffer.ToString() },
-                    { "device", string.Join(",", _devices ?? new string[]{""}) },
-                    { "priority", "1" }
+                    { "device", string.Join(",", _devices ?? new[]{""}) },
+                    { "priority", _pushoverMessagePriority.ToString("D") }
                 };
 
                 using (var client = new WebClient())
                 {
-                    byte[] response = client.UploadValues(_apiUri, parameters);
-                    var result = Encoding.ASCII.GetString(response);
+                    client.UploadValues(new Uri(_apiUri), parameters);
                 }
             }
         }
