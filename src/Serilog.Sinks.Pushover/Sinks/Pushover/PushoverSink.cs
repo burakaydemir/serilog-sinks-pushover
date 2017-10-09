@@ -2,8 +2,8 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Text;
 using Serilog.Core;
-using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Formatting;
 
@@ -38,7 +38,7 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
-            
+
 
             using (var titleBuffer = new StringWriter())
             using (var messageBuffer = new StringWriter())
@@ -53,12 +53,14 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
                         { "user", _userOrGroupKey },
                         { "title", titleBuffer.ToString() },
                         { "message", messageBuffer.ToString() },
-                        { "device", string.Join(",", _devices ?? new string[]{""}) }
+                        { "device", string.Join(",", _devices ?? new string[]{""}) },
+                        { "priority", "1" }
                     };
 
                     using (var client = new WebClient())
                     {
                         byte[] response = client.UploadValues(_apiUri, parameters);
+                        var result = Encoding.ASCII.GetString(response);
                     }
                 }
                 catch (Exception ex)
