@@ -10,7 +10,8 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
 {
     public class PushoverSink : ILogEventSink
     {
-        private readonly ITextFormatter _textFormatter;
+        private readonly ITextFormatter _messageFormatter;
+        private readonly ITextFormatter _titleFormatter;
         private readonly string _apiUri;
         private readonly string _token;
         private readonly string _userOrGroupKey;
@@ -18,9 +19,10 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         private readonly LogEventLevel _logEventLevel;
         private readonly LoggingLevelSwitch _loggingLevelSwitch;
 
-        public PushoverSink(ITextFormatter textFormatter, string apiUri, string token, string userOrGroupKey, string[] devices, LogEventLevel logEventLevel, LoggingLevelSwitch loggingLevelSwitch)
+        public PushoverSink(ITextFormatter titleFormatter, ITextFormatter messageFormatter, string apiUri, string token, string userOrGroupKey, string[] devices, LogEventLevel logEventLevel, LoggingLevelSwitch loggingLevelSwitch)
         {
-            _textFormatter = textFormatter;
+            _titleFormatter = titleFormatter;
+            _messageFormatter = messageFormatter;
             _apiUri = apiUri;
             _token = token;
             _userOrGroupKey = userOrGroupKey;
@@ -35,17 +37,19 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
-            using (var buffer = new StringWriter())
+            using (var titleBuffer = new StringWriter())
+            using (var messageBuffer = new StringWriter())
             {
-                _textFormatter.Format(logEvent, buffer);
+                _titleFormatter.Format(logEvent, titleBuffer);
+                _messageFormatter.Format(logEvent, messageBuffer);
 
                 try
                 {
                     var parameters = new NameValueCollection {
                         { "token", _token },
-                        { "title", "Something went wrong!" },
                         { "user", _userOrGroupKey },
-                        { "message", buffer.ToString() },
+                        { "title", _titleFormatter.ToString() },
+                        { "message", _messageFormatter.ToString() },
                         { "device", string.Join(",", _devices) }
                     };
 
