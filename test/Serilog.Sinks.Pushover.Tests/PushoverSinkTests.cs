@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Serilog.Debugging;
 using Serilog.Events;
+using Assert = Xunit.Assert;
 
 namespace Serilog.Sinks.Pushover.Tests
 {
@@ -9,7 +13,12 @@ namespace Serilog.Sinks.Pushover.Tests
     {
         private string token = "xxx";
         private string userOrGroupKey = "xxx";
+        readonly List<string> _selfLogMessages = new List<string>();
 
+        public PushoverSinkTests()
+        {
+            SelfLog.Enable(_selfLogMessages.Add);
+        }
 
         [TestMethod]
         public void Can_Send_PushMessage()
@@ -19,6 +28,8 @@ namespace Serilog.Sinks.Pushover.Tests
             {
                 pushoverLoger.Information("test {notification}", "notification");
             }
+
+            Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
         }
 
         [TestMethod]
@@ -29,15 +40,15 @@ namespace Serilog.Sinks.Pushover.Tests
             {
                 try
                 {
-                    var zero = 0;
-                    var value = 1;
-                    var exceptionalProcess = value / zero;
+                    throw new DivideByZeroException();
                 }
                 catch (Exception e)
                 {
-                    pushoverLoger.Error(e, "something went wrong {@UserInfo}", new { UserName = "b.a", Name = "Burak", Surname = "Aydemir" });
+                    pushoverLoger.Error(e, "something went wrong! {@UserInfo}", new { UserName = "b.a", Name = "Burak", Surname = "Aydemir" });
                 }
             }
+
+            Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
         }
 
         [TestMethod]
@@ -48,6 +59,8 @@ namespace Serilog.Sinks.Pushover.Tests
             {
                 pushoverLoger.Information("The information message that never reach");
             }
+
+            Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
         }
     }
 }
