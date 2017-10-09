@@ -286,3 +286,4 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/test/Serilog.Sinks.Pushover.Tests/test_account.txt
