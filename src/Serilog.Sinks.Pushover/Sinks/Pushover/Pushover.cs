@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting;
@@ -64,7 +65,15 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
 
                 using (var client = new WebClient())
                 {
-                    client.UploadValues(new Uri(_apiUri), parameters);
+                    try
+                    {
+                        client.UploadValues(new Uri(_apiUri), parameters);
+                    }
+                    catch (WebException webException)
+                    {
+                        var resp = new StreamReader(webException.Response.GetResponseStream()).ReadToEnd();
+                        throw new HttpRequestException(resp, webException);
+                    }
                 }
             }
         }

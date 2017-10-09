@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog.Debugging;
 using Serilog.Events;
+using Serilog.Sinks.Pushover.Sinks.Pushover;
 using Assert = Xunit.Assert;
 
 namespace Serilog.Sinks.Pushover.Tests
@@ -79,9 +80,29 @@ namespace Serilog.Sinks.Pushover.Tests
         public void Should_push_message_text_changable()
         {
             using (var pushoverLoger = new LoggerConfiguration()
-                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error, 
-                            outputTitleTemplate: "|{Level}| {Message}", 
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error,
+                            outputTitleTemplate: "|{Level}| {Message}",
                             outputMessageTemplate: "Below error throwed! {Exception}").CreateLogger())
+            {
+                try
+                {
+                    throw new DivideByZeroException();
+                }
+                catch (Exception e)
+                {
+                    pushoverLoger.Error(e, "something went wrong! {UserName}", "b.b");
+                }
+            }
+
+            Assert.Equal(Enumerable.Empty<string>(), _selfLogMessages);
+        }
+
+        [TestMethod]
+        public void Can_send_pushovermessageprioritylevel()
+        {
+            using (var pushoverLoger = new LoggerConfiguration()
+                .WriteTo.PushoverSink(token, userOrGroupKey, LogEventLevel.Error,
+                pushoverMessagePriority: PushoverMessagePriority.EmergencyPriority).CreateLogger())
             {
                 try
                 {
