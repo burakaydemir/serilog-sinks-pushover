@@ -287,3 +287,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 /test/Serilog.Sinks.Pushover.Tests/test_account.txt
+/src/Serilog.Sinks.Pushover/Serilog.Sinks.Pushover.nuspec
+/src/Serilog.Sinks.Pushover/nuget.exe
