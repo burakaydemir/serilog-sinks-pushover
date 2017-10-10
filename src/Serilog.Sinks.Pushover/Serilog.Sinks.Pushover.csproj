@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
-    <Version>1.2.1</Version>
-    <AssemblyVersion>1.2.1</AssemblyVersion>
-    <FileVersion>1.2.1</FileVersion>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.2</AssemblyVersion>
+    <FileVersion>1.2.2</FileVersion>
     <Description>Serilog sink to publish to Pushover</Description>
     <PackageProjectUrl>https://github.com/burakaydemir/serilog-sinks-pushover</PackageProjectUrl>
     <PackageTags>serilog sinks pushover</PackageTags>
@@ -26,7 +26,6 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Net.Http" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
