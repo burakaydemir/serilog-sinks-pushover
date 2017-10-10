@@ -8,7 +8,7 @@ Sends log events using Pushover.
 ```csharp
 var log = new LoggerConfiguration()
                 .WriteTo.PushoverSink(ConfigurationManager.AppSettings["pushover:token"],
-                                      ConfigurationManager.AppSettings["userOrGroupKey"],
+                                      ConfigurationManager.AppSettings["pushover:userOrGroupKey"],
                                       LogEventLevel.Error,
                                       pushoverMessagePriority: PushoverMessagePriority.HighPriority)
                 .CreateLogger();
