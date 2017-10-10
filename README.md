@@ -10,6 +10,6 @@ var log = new LoggerConfiguration()
                 .WriteTo.PushoverSink("xxx" /*token*/,
                                       "xxx" /*userOrGroupKey*/,
                                       LogEventLevel.Error,
-                                      pushoverMessagePriority: PushoverMessagePriority.EmergencyPriority)
+                                      pushoverMessagePriority: PushoverMessagePriority.HighPriority)
                 .CreateLogger();
 ```
