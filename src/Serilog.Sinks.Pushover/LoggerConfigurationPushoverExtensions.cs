@@ -13,7 +13,7 @@ namespace Serilog.Sinks.Pushover
         const string DefaultPushoverTitleTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}";
         const string DefaultPushoverMessageTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}";
 
-        public static LoggerConfiguration PushoverSink(
+        public static LoggerConfiguration Pushover(
             this LoggerSinkConfiguration loggerSinkConfiguration,
             string token,
             string userOrGroupKey,
@@ -35,7 +35,7 @@ namespace Serilog.Sinks.Pushover
             var titleFormatter = new MessageTemplateTextFormatter(outputTitleTemplate, formatProvider);
             var messageFormatter = new MessageTemplateTextFormatter(outputMessageTemplate, formatProvider);
 
-            return loggerSinkConfiguration.Sink(new Sinks.Pushover.Pushover(titleFormatter, messageFormatter, apiUri, token, userOrGroupKey, devices, pushoverMessagePriority, restrictedToMinimumLevel));
+            return loggerSinkConfiguration.Sink(new Sinks.Pushover.PushoverSink(titleFormatter, messageFormatter, apiUri, token, userOrGroupKey, devices, pushoverMessagePriority, restrictedToMinimumLevel));
         }
     }
 }

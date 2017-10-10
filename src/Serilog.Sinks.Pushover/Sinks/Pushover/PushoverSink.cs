@@ -9,7 +9,7 @@ using Serilog.Formatting;
 
 namespace Serilog.Sinks.Pushover.Sinks.Pushover
 {
-    public class Pushover : ILogEventSink
+    public class PushoverSink : ILogEventSink
     {
         private readonly ITextFormatter _messageFormatter;
         private readonly ITextFormatter _titleFormatter;
@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Pushover.Sinks.Pushover
         private readonly PushoverMessagePriority _pushoverMessagePriority;
         private readonly LogEventLevel _logEventLevel;
 
-        public Pushover(ITextFormatter titleFormatter,
+        public PushoverSink(ITextFormatter titleFormatter,
             ITextFormatter messageFormatter,
             string apiUri,
             string token,
