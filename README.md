@@ -43,3 +43,5 @@ In your application's `App.config` or `Web.config` file, specify the pushover si
     <add key="serilog:write-to:Pushover.outputTitleTemplate" value="[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}" />
     <add key="serilog:write-to:Pushover.outputMessageTemplate" value="[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}" />
 ```
+
+
